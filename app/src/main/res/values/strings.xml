@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">NetworkinTestApp</string>
+
+    <string name="switch_http_text" translatable="false">HTTP</string>
+    <string name="switch_https_text" translatable="false">HTTPS</string>
+    <string name="switch_respect_android_text" translatable="false">Proxy Global</string>
+    <string name="switch_disrespect_android_text" translatable="false">Custom Proxy</string>
+
+    <string name="switch_http" translatable="false">switchHttp</string>
+    <string name="switch_https" translatable="false">switchHttps</string>
+    <string name="switch_respect_android" translatable="false">switchRespectAndroid</string>
+    <string name="switch_disrespect_android" translatable="false">switchDisrespectAndroid</string>
+
+    <string name="radio_android" translatable="false">Default</string>
+    <string name="radio_okhttp" translatable="false">OkHTTP</string>
+    <string name="radio_cronet" translatable="false">Cronet</string>
+    <string name="radio_apache" translatable="false">Apache</string>
+
+
+</resources>
