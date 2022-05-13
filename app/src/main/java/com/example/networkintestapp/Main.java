@@ -1,6 +1,8 @@
 package com.example.networkintestapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class Main extends AppCompatActivity {
@@ -18,6 +21,7 @@ public class Main extends AppCompatActivity {
     public Switch switchDisrespectAndroid;
     public RadioGroup radioNetworkStack;
     public ToggleButton buttonTerminalToggle;
+    private ResponseToUi model;
     private String TAG = this.getClass().getName();
     private Context mContext = this;
 
@@ -35,7 +39,19 @@ public class Main extends AppCompatActivity {
         }
         radioNetworkStack.getChildAt(0).performClick();
         Log.d(TAG, "Programa inicializado.");
+        model = new ViewModelProvider(this).get(ResponseToUi.class);
+        dataListener();
         buttonsListener();
+    }
+
+    public void dataListener() {
+        final Observer<String> responseMessageObserver = new Observer<String>() {
+            @Override
+            public void onChanged(String message) {
+                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+            }
+        };
+        model.getResponseMessage().observe(this, responseMessageObserver);
     }
 
     public void buttonsListener() {
@@ -47,7 +63,7 @@ public class Main extends AppCompatActivity {
                 final int httpStack = radioNetworkStack.getCheckedRadioButtonId();
 
                 if (isChecked) {
-                    final TerminalThread terminalThreadClass = new TerminalThread(mContext,
+                    final TerminalThread terminalThreadClass = new TerminalThread(mContext, model,
                             switchHttpsState, switchDisrespectAndroidState, httpStack);
                     terminalThreadClass.run();
                     buttonsEnabledState(false);

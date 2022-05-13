@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.networkintestapp.Constant;
+import com.example.networkintestapp.ResponseToUi;
 
 import java.io.IOException;
 
@@ -24,7 +25,7 @@ public class HttpOkStack {
         useProxy = doesProxy;
     }
 
-    public void doRequest(String TAG) throws IOException {
+    public void doRequest(String TAG, ResponseToUi model) throws IOException {
         String url;
 
         if (useHttps) {
@@ -36,9 +37,14 @@ public class HttpOkStack {
         Request request = new Request.Builder().url(url).build();
 
         try (Response response = client.newCall(request).execute()) {
-            Log.d(TAG, "HttpOkStack state: " + response.code());
+
+            int responseCode = response.code();
+            Log.d(TAG, "HttpOkStack state: " + responseCode);
+
+            String responseMessage = responseCode + " " + response.message();
+            model.getResponseMessage().postValue(responseMessage);
+
             Log.d(TAG, "HttpOkStack state: " + response.isSuccessful());
         }
-
     }
 }

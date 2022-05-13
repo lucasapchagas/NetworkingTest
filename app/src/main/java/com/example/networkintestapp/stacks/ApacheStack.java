@@ -2,7 +2,11 @@ package com.example.networkintestapp.stacks;
 
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.networkintestapp.Constant;
+import com.example.networkintestapp.ResponseToUi;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -21,29 +25,27 @@ public class ApacheStack {
         useProxy = doesProxy;
     }
 
-    public boolean doRequest(String TAG) throws IOException {
-        boolean success = false;
-
+    public void doRequest(String TAG, ResponseToUi model) throws IOException {
         String url = Constant.DEFAULT_URL_HTTP;
         if (useHttps) url = Constant.DEFAULT_URL_HTTPS;
 
         final CloseableHttpClient httpClient = HttpClients.createDefault();
         final HttpGet httpGet = new HttpGet(url);
 
-        CloseableHttpResponse response = httpClient.execute(httpGet);
+        final CloseableHttpResponse response = httpClient.execute(httpGet);
+
         try {
             int responseCode = response.getCode();
             Log.d(TAG, "ApacheStack state: " + responseCode);
+            String responseMessage = responseCode + " " + response.getReasonPhrase();
             if ( responseCode >= 200 && responseCode <= 299) {
                 Log.d(TAG, "ApacheStack state: true");
                 response.close();
-                success = true;
+                model.getResponseMessage().postValue(responseMessage);
             }
         } catch (Exception e) {
             response.close();
-            success = false;
-        } finally {
-            return success;
+            throw e;
         }
     }
 }

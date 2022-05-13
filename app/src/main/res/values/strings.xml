@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NetworkinTestApp</string>
+    <string name="app_name">NetworkingTestApp</string>
 
     <string name="switch_http_text" translatable="false">HTTP</string>
     <string name="switch_https_text" translatable="false">HTTPS</string>

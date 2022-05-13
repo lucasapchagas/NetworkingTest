@@ -2,6 +2,9 @@ package com.example.networkintestapp.stacks.cronetutils;
 
 import android.util.Log;
 
+import com.example.networkintestapp.R;
+import com.example.networkintestapp.ResponseToUi;
+
 import org.chromium.net.CronetException;
 import org.chromium.net.UrlRequest;
 import org.chromium.net.UrlResponseInfo;
@@ -11,9 +14,11 @@ import java.nio.ByteBuffer;
 public class MyUrlRequestCallback extends UrlRequest.Callback {
 
     private String TAG;
+    private ResponseToUi mModel;
 
-    public MyUrlRequestCallback(String thisTag) {
+    public MyUrlRequestCallback(String thisTag, ResponseToUi thisModel) {
         TAG = thisTag;
+        mModel = thisModel;
     }
 
     @Override
@@ -26,8 +31,11 @@ public class MyUrlRequestCallback extends UrlRequest.Callback {
         Log.d(TAG, "CronetStack state: Request started");
 
         int responseCode = info.getHttpStatusCode();
-
         Log.d(TAG, "CronetStack state: " + responseCode);
+
+        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        mModel.getResponseMessage().postValue(responseMessage);
+        // Log.d(TAG, "CronetStack state: " + info.getHttpStatusText());
 
         if (responseCode >= 200 && responseCode <= 299) {
             Log.d(TAG, "CronetStack state: true");

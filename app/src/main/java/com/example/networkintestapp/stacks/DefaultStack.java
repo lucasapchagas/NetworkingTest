@@ -3,6 +3,7 @@ package com.example.networkintestapp.stacks;
 import android.util.Log;
 
 import com.example.networkintestapp.Constant;
+import com.example.networkintestapp.ResponseToUi;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -19,7 +20,7 @@ public class DefaultStack {
         useProxy = doesProxy;
     }
 
-    public void doRequest(String TAG) throws IOException {
+    public void doRequest(String TAG, ResponseToUi model) throws IOException {
 
         try {
             URL url = new URL(Constant.DEFAULT_URL_HTTP);
@@ -35,7 +36,8 @@ public class DefaultStack {
                 Log.d(TAG, "DefaultHttpStack state: true");
             }
 
-            Log.d(TAG,http.getResponseCode() + " " + http.getResponseMessage());
+            String responseMessage = responseCode + " " + http.getResponseMessage();
+            model.getResponseMessage().postValue(responseMessage);
 
             http.disconnect();
         } catch (MalformedURLException e) {

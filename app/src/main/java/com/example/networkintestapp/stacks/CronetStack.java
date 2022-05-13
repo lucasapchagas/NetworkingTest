@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.networkintestapp.Constant;
+import com.example.networkintestapp.ResponseToUi;
 import com.example.networkintestapp.stacks.cronetutils.MyUrlRequestCallback;
 import com.google.android.gms.net.CronetProviderInstaller;
 
@@ -31,7 +32,7 @@ public class CronetStack {
         useProxy = doesProxy;
     }
 
-    public void doRequest(String TAG) throws IOException {
+    public void doRequest(String TAG, ResponseToUi model) throws IOException {
 
         CronetProviderInstaller.installProvider(context);
 
@@ -42,7 +43,7 @@ public class CronetStack {
         if (useHttps) url = Constant.DEFAULT_URL_HTTPS;
 
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
-                new MyUrlRequestCallback(TAG), executor);
+                new MyUrlRequestCallback(TAG, model), executor);
         UrlRequest request = requestBuilder.build();
 
         request.start();

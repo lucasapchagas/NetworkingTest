@@ -18,15 +18,14 @@ public class TerminalThread {
     private static boolean DisrespectAndroidState;
     private static int HttpStack;
     private static String TAG = TerminalThread.class.getName();
+    private static ResponseToUi mModel;
     private static Context mContext;
 
-    public static String lastOperationName = "";
-    public static boolean lastOperationSuccess = false;
-
-    public TerminalThread(Context context, boolean switchHttpsState, boolean switchDisrespectAndroidState,
-                          int httpStack) {
+    public TerminalThread(Context context, ResponseToUi model, boolean switchHttpsState,
+                          boolean switchDisrespectAndroidState, int httpStack) {
 
         mContext = context;
+        mModel = model;
         HttpsState = switchHttpsState;
         DisrespectAndroidState = switchDisrespectAndroidState;
         HttpStack = httpStack;
@@ -48,7 +47,7 @@ public class TerminalThread {
                             DefaultStack defaultStack = new DefaultStack(HttpsState,
                                     false);
                             try {
-                                defaultStack.doRequest(TAG);
+                                defaultStack.doRequest(TAG, mModel);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
                             }
@@ -62,7 +61,7 @@ public class TerminalThread {
                             HttpOkStack httpOkStack = new HttpOkStack(mContext, HttpsState,
                                     false);
                             try {
-                                httpOkStack.doRequest(TAG);
+                                httpOkStack.doRequest(TAG, mModel);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
                             }
@@ -73,23 +72,18 @@ public class TerminalThread {
                     CronetStack cronetStack = new CronetStack(mContext, executorService1,
                             HttpsState, false);
                     try {
-                        cronetStack.doRequest(TAG);
+                        cronetStack.doRequest(TAG, mModel);
                     } catch (Exception e) {
                         Log.d(TAG, e.toString());
                     }
                     break;
                 case (Constant.Stack.APACHE):
-                    lastOperationName = "APACHE";
                     executorService1.execute(new Runnable() {
                         @Override
                         public void run() {
                             ApacheStack apacheStack = new ApacheStack(HttpsState, false);
                             try {
-                                if (apacheStack.doRequest(TAG)) {
-                                    lastOperationSuccess = true;
-                                } else {
-                                    lastOperationSuccess = false;
-                                }
+                                apacheStack.doRequest(TAG, mModel);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
                             }
