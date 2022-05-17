@@ -40,7 +40,7 @@ public class Main extends AppCompatActivity {
             radioNetworkStack.getChildAt(i).setId(i);
         }
         radioNetworkStack.getChildAt(0).performClick();
-        Log.d(TAG, "Programa inicializado.");
+        Log.d(TAG, "Initialized app.");
         model = new ViewModelProvider(this).get(ResponseToUi.class);
         dataListener();
         buttonsListener();
@@ -72,7 +72,7 @@ public class Main extends AppCompatActivity {
                     return;
                 }
 
-                Log.d(TAG, "TerminalThread finalizada.");
+                Log.d(TAG, "TerminalThread is over.");
                 buttonsEnabledState(true);
             }
         });
@@ -80,7 +80,7 @@ public class Main extends AppCompatActivity {
 
     public void buttonsEnabledState(boolean state) {
         switchHttps.setEnabled(state);
-        switchDisrespectAndroid.setEnabled(state);
+        // switchDisrespectAndroid.setEnabled(state);
         for (int i = 0; i < radioNetworkStack.getChildCount(); i++) {
              radioNetworkStack.getChildAt(i).setEnabled(state);
         }
@@ -99,5 +99,4 @@ public class Main extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 }

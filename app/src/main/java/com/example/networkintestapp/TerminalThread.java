@@ -32,7 +32,7 @@ public class TerminalThread {
     }
 
     public void run() {
-        Log.d(TAG, "TerminalThread inicializada.");
+        Log.d(TAG, "TerminalThread initialized.");
         Log.d(TAG, "HttpsState: " + HttpsState);
         Log.d(TAG, "DisrespectAndroidState: " + DisrespectAndroidState);
         Log.d(TAG, "HttpStack: " + HttpStack);

@@ -24,6 +24,12 @@ public class MyUrlRequestCallback extends UrlRequest.Callback {
     @Override
     public void onRedirectReceived(UrlRequest request, UrlResponseInfo info, String newLocationUrl) throws Exception {
         Log.d(TAG, "CronetStack state: Request redirected");
+
+        int responseCode = info.getHttpStatusCode();
+        Log.d(TAG, "CronetStack state: " + responseCode);
+
+        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        mModel.getResponseMessage().postValue(responseMessage);
     }
 
     @Override
@@ -45,16 +51,34 @@ public class MyUrlRequestCallback extends UrlRequest.Callback {
     @Override
     public void onReadCompleted(UrlRequest request, UrlResponseInfo info, ByteBuffer byteBuffer) throws Exception {
         Log.d(TAG, "CronetStack state: request fully read");
+
+        int responseCode = info.getHttpStatusCode();
+        Log.d(TAG, "CronetStack state: " + responseCode);
+
+        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        mModel.getResponseMessage().postValue(responseMessage);
     }
 
     @Override
     public void onSucceeded(UrlRequest request, UrlResponseInfo info) {
         Log.d(TAG, "CronetStack state: succeeded");
+
+        int responseCode = info.getHttpStatusCode();
+        Log.d(TAG, "CronetStack state: " + responseCode);
+
+        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        mModel.getResponseMessage().postValue(responseMessage);
     }
 
     @Override
     public void onFailed(UrlRequest request, UrlResponseInfo info, CronetException error) {
         Log.d(TAG, "CronetStack state: error");
         Log.d(TAG, error.toString());
+
+        int responseCode = info.getHttpStatusCode();
+        Log.d(TAG, "CronetStack state: " + responseCode);
+
+        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        mModel.getResponseMessage().postValue(responseMessage);
     }
 }
