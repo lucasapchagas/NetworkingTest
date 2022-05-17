@@ -41,7 +41,7 @@ public class HttpOkStack {
             int responseCode = response.code();
             Log.d(TAG, "HttpOkStack state: " + responseCode);
 
-            String responseMessage = responseCode + " " + response.message();
+            String responseMessage = "HttpOkStack state: " + responseCode + " " + response.message();
             model.getResponseMessage().postValue(responseMessage);
 
             Log.d(TAG, "HttpOkStack state: " + response.isSuccessful());

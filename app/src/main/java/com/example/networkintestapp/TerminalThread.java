@@ -48,9 +48,10 @@ public class TerminalThread {
                                     false);
                             try {
                                 defaultStack.doRequest(TAG, mModel);
+                                mModel.getResponseStack().postValue(Constant.Stack.DEFAULT);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
-                                mModel.getResponseMessage().postValue(TAG + " " + e.toString());
+                                mModel.getResponseMessage().postValue("DefaultHttpStack state: " + e);
                             }
                         }
                     });
@@ -63,9 +64,10 @@ public class TerminalThread {
                                     false);
                             try {
                                 httpOkStack.doRequest(TAG, mModel);
+                                mModel.getResponseStack().postValue(Constant.Stack.OKHTTP);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
-                                mModel.getResponseMessage().postValue(TAG + " " + e.toString());
+                                mModel.getResponseMessage().postValue("HttpOkStack state: " + e);
                             }
                         }
                     });
@@ -75,9 +77,10 @@ public class TerminalThread {
                             HttpsState, false);
                     try {
                         cronetStack.doRequest(TAG, mModel);
+                        mModel.getResponseStack().postValue(Constant.Stack.CRONET);
                     } catch (Exception e) {
                         Log.d(TAG, e.toString());
-                        mModel.getResponseMessage().postValue(TAG + " " + e.toString());
+                        mModel.getResponseMessage().postValue("CronetStack state: " + e);
                     }
                     break;
                 case (Constant.Stack.APACHE):
@@ -87,9 +90,10 @@ public class TerminalThread {
                             ApacheStack apacheStack = new ApacheStack(HttpsState, false);
                             try {
                                 apacheStack.doRequest(TAG, mModel);
+                                mModel.getResponseStack().postValue(Constant.Stack.APACHE);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
-                                mModel.getResponseMessage().postValue(TAG + " " + e.toString());
+                                mModel.getResponseMessage().postValue("ApacheStack state: " + e);
                             }
                         }
                     });

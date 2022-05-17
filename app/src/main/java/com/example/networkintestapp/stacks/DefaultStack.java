@@ -36,7 +36,7 @@ public class DefaultStack {
                 Log.d(TAG, "DefaultHttpStack state: true");
             }
 
-            String responseMessage = responseCode + " " + http.getResponseMessage();
+            String responseMessage = "DefaultHttpStack state: " + responseCode + " " + http.getResponseMessage();
             model.getResponseMessage().postValue(responseMessage);
 
             http.disconnect();

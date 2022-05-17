@@ -28,7 +28,7 @@ public class MyUrlRequestCallback extends UrlRequest.Callback {
         int responseCode = info.getHttpStatusCode();
         Log.d(TAG, "CronetStack state: " + responseCode);
 
-        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        String responseMessage = "CronetStack state: " + responseCode + " " + info.getHttpStatusText();
         mModel.getResponseMessage().postValue(responseMessage);
     }
 
@@ -39,9 +39,8 @@ public class MyUrlRequestCallback extends UrlRequest.Callback {
         int responseCode = info.getHttpStatusCode();
         Log.d(TAG, "CronetStack state: " + responseCode);
 
-        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        String responseMessage = "CronetStack state: " + responseCode + " " + info.getHttpStatusText();
         mModel.getResponseMessage().postValue(responseMessage);
-        // Log.d(TAG, "CronetStack state: " + info.getHttpStatusText());
 
         if (responseCode >= 200 && responseCode <= 299) {
             Log.d(TAG, "CronetStack state: true");
@@ -55,7 +54,7 @@ public class MyUrlRequestCallback extends UrlRequest.Callback {
         int responseCode = info.getHttpStatusCode();
         Log.d(TAG, "CronetStack state: " + responseCode);
 
-        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        String responseMessage = "CronetStack state: " + responseCode + " " + info.getHttpStatusText();
         mModel.getResponseMessage().postValue(responseMessage);
     }
 
@@ -66,7 +65,7 @@ public class MyUrlRequestCallback extends UrlRequest.Callback {
         int responseCode = info.getHttpStatusCode();
         Log.d(TAG, "CronetStack state: " + responseCode);
 
-        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        String responseMessage = "CronetStack state: " + responseCode + " " + info.getHttpStatusText();
         mModel.getResponseMessage().postValue(responseMessage);
     }
 
@@ -75,10 +74,7 @@ public class MyUrlRequestCallback extends UrlRequest.Callback {
         Log.d(TAG, "CronetStack state: error");
         Log.d(TAG, error.toString());
 
-        int responseCode = info.getHttpStatusCode();
-        Log.d(TAG, "CronetStack state: " + responseCode);
-
-        String responseMessage = responseCode + " " + info.getHttpStatusText();
+        String responseMessage =  "CronetStack state: error" + error;
         mModel.getResponseMessage().postValue(responseMessage);
     }
 }

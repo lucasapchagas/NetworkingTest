@@ -37,7 +37,7 @@ public class ApacheStack {
         try {
             int responseCode = response.getCode();
             Log.d(TAG, "ApacheStack state: " + responseCode);
-            String responseMessage = responseCode + " " + response.getReasonPhrase();
+            String responseMessage = "ApacheStack state: " + responseCode + " " + response.getReasonPhrase();
             if ( responseCode >= 200 && responseCode <= 299) {
                 Log.d(TAG, "ApacheStack state: true");
                 response.close();

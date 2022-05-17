@@ -1,22 +1,28 @@
 package com.example.networkintestapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
-import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class Main extends AppCompatActivity {
 
+    private static final String CHANNEL_ID = "NETWORKINGTEST";
     public Switch switchHttps;
     public Switch switchDisrespectAndroid;
     public RadioGroup radioNetworkStack;
@@ -29,7 +35,6 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         switchHttps = findViewById(R.id.switchHttps);
         switchDisrespectAndroid = findViewById(R.id.switchDisrespectAndroid);
         // TO-DO implement custom proxy for the app
@@ -44,13 +49,25 @@ public class Main extends AppCompatActivity {
         model = new ViewModelProvider(this).get(ResponseToUi.class);
         dataListener();
         buttonsListener();
+        createNotificationChannel();
     }
 
     public void dataListener() {
         final Observer<String> responseMessageObserver = new Observer<String>() {
             @Override
             public void onChanged(String message) {
-                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+
+                Snackbar snackbar =
+                        Snackbar.make(findViewById(android.R.id.content), message,
+                                Snackbar.LENGTH_SHORT).setAction("VIEW",
+                                new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                sendNotificationMessage(message);
+                            }
+                        });
+                snackbar.show();
             }
         };
         model.getResponseMessage().observe(this, responseMessageObserver);
@@ -85,18 +102,28 @@ public class Main extends AppCompatActivity {
              radioNetworkStack.getChildAt(i).setEnabled(state);
         }
     }
-    public void createResponseDialog(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setCancelable(true);
-        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "NetworkingTestApp Channel";
+            String description = "NetworkingTestApp notification channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void sendNotificationMessage(String message) {
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("Networking app test")
+                .setContentText(message)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mContext);
+        notificationManager.notify(1, builder.build());
     }
 }

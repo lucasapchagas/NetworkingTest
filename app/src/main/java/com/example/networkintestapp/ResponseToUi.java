@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 public class ResponseToUi extends ViewModel {
 
     private MutableLiveData<String> responseMessage;
-    private MutableLiveData<Integer> responseCode;
+    private MutableLiveData<Integer> responseStack;
 
     public MutableLiveData<String> getResponseMessage() {
         if (responseMessage == null){
@@ -15,10 +15,10 @@ public class ResponseToUi extends ViewModel {
         return responseMessage;
     }
 
-    public MutableLiveData<Integer> getResponseCode() {
-        if (responseCode == null){
-            responseCode = new MutableLiveData<Integer>();
+    public MutableLiveData<Integer> getResponseStack() {
+        if (responseStack == null){
+            responseStack = new MutableLiveData<Integer>();
         }
-        return responseCode;
+        return responseStack;
     }
 }
