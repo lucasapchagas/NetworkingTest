@@ -50,6 +50,7 @@ public class TerminalThread {
                                 defaultStack.doRequest(TAG, mModel);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
+                                mModel.getResponseMessage().postValue(TAG + " " + e.toString());
                             }
                         }
                     });
@@ -64,6 +65,7 @@ public class TerminalThread {
                                 httpOkStack.doRequest(TAG, mModel);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
+                                mModel.getResponseMessage().postValue(TAG + " " + e.toString());
                             }
                         }
                     });
@@ -75,6 +77,7 @@ public class TerminalThread {
                         cronetStack.doRequest(TAG, mModel);
                     } catch (Exception e) {
                         Log.d(TAG, e.toString());
+                        mModel.getResponseMessage().postValue(TAG + " " + e.toString());
                     }
                     break;
                 case (Constant.Stack.APACHE):
@@ -86,6 +89,7 @@ public class TerminalThread {
                                 apacheStack.doRequest(TAG, mModel);
                             } catch (Exception e) {
                                 Log.d(TAG, e.toString());
+                                mModel.getResponseMessage().postValue(TAG + " " + e.toString());
                             }
                         }
                     });
