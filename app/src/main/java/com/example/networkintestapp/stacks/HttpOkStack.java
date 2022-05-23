@@ -7,6 +7,8 @@ import com.example.networkintestapp.Constant;
 import com.example.networkintestapp.ResponseToUi;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,7 +19,6 @@ public class HttpOkStack {
     private Context context;
     private boolean useHttps;
     private boolean useProxy;
-    private OkHttpClient client = new OkHttpClient();
 
     public HttpOkStack(Context instanceContext, boolean doesHttps, boolean doesProxy) {
         context = instanceContext;
@@ -27,6 +28,15 @@ public class HttpOkStack {
 
     public void doRequest(String TAG, ResponseToUi model) throws IOException {
         String url;
+        OkHttpClient client;
+
+        if (useProxy) {
+            Proxy proxy = new Proxy(Proxy.Type.HTTP,
+                    new InetSocketAddress("192.168.1.0", 8080));
+            client = new OkHttpClient.Builder().proxy(proxy).build();
+        } else {
+            client = new OkHttpClient.Builder().build();
+        }
 
         if (useHttps) {
             url = Constant.DEFAULT_URL_HTTPS;

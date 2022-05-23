@@ -2,9 +2,6 @@ package com.example.networkintestapp.stacks;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.example.networkintestapp.Constant;
 import com.example.networkintestapp.ResponseToUi;
 

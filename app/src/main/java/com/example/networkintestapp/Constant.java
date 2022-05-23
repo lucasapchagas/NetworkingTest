@@ -1,11 +1,18 @@
 package com.example.networkintestapp;
 
+
+
 import androidx.annotation.IntDef;
+
+import java.net.Proxy;
+import java.net.SocketAddress;
 
 public class Constant {
 
     public static final String DEFAULT_URL_HTTP = "http://www.pudim.com.br/";
     public static final String DEFAULT_URL_HTTPS = "https://www.google.com/";
+    public static final String PROXY_HOSTNAME = "";
+    public static final int PROXY_PORT = 0;
 
     @IntDef({
             Stack.DEFAULT,

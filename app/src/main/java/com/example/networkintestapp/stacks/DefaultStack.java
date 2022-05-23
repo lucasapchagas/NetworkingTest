@@ -7,7 +7,9 @@ import com.example.networkintestapp.ResponseToUi;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 
 public class DefaultStack {
@@ -27,7 +29,17 @@ public class DefaultStack {
 
             if (useHttps) url = new URL(Constant.DEFAULT_URL_HTTPS);
 
-            HttpURLConnection http = (HttpURLConnection)url.openConnection();
+            HttpURLConnection http;
+
+            if (useProxy) {
+                Log.d(TAG, "Tentando usar o proxy");
+                Proxy proxy = new Proxy(Proxy.Type.HTTP,
+                        new InetSocketAddress("192.168.1.0", 8080));
+                http = (HttpURLConnection)url.openConnection(proxy);
+            }
+            else {
+                http = (HttpURLConnection)url.openConnection();
+            }
 
             int responseCode = http.getResponseCode();
 

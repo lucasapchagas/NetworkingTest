@@ -38,7 +38,7 @@ public class Main extends AppCompatActivity {
         switchHttps = findViewById(R.id.switchHttps);
         switchDisrespectAndroid = findViewById(R.id.switchDisrespectAndroid);
         // TO-DO implement custom proxy for the app
-        switchDisrespectAndroid.setEnabled(false);
+        //switchDisrespectAndroid.setEnabled(false);
         radioNetworkStack = findViewById(R.id.radioGroupNetworkStack);
         buttonTerminalToggle = findViewById(R.id.buttonTerminalToggle);
         for (int i = 0; i < radioNetworkStack.getChildCount(); i++) {

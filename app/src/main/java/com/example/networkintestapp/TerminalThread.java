@@ -45,7 +45,7 @@ public class TerminalThread {
                         @Override
                         public void run() {
                             DefaultStack defaultStack = new DefaultStack(HttpsState,
-                                    false);
+                                    DisrespectAndroidState);
                             try {
                                 defaultStack.doRequest(TAG, mModel);
                                 mModel.getResponseStack().postValue(Constant.Stack.DEFAULT);
@@ -61,7 +61,7 @@ public class TerminalThread {
                         @Override
                         public void run() {
                             HttpOkStack httpOkStack = new HttpOkStack(mContext, HttpsState,
-                                    false);
+                                    DisrespectAndroidState);
                             try {
                                 httpOkStack.doRequest(TAG, mModel);
                                 mModel.getResponseStack().postValue(Constant.Stack.OKHTTP);
@@ -74,7 +74,7 @@ public class TerminalThread {
                     break;
                 case (Constant.Stack.CRONET):
                     CronetStack cronetStack = new CronetStack(mContext, executorService1,
-                            HttpsState, false);
+                            HttpsState, DisrespectAndroidState);
                     try {
                         cronetStack.doRequest(TAG, mModel);
                         mModel.getResponseStack().postValue(Constant.Stack.CRONET);
@@ -87,7 +87,7 @@ public class TerminalThread {
                     executorService1.execute(new Runnable() {
                         @Override
                         public void run() {
-                            ApacheStack apacheStack = new ApacheStack(HttpsState, false);
+                            ApacheStack apacheStack = new ApacheStack(HttpsState, DisrespectAndroidState);
                             try {
                                 apacheStack.doRequest(TAG, mModel);
                                 mModel.getResponseStack().postValue(Constant.Stack.APACHE);
