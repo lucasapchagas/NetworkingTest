@@ -1,10 +1,14 @@
 package com.example.networkintestapp.stacks;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import com.example.networkintestapp.Constant;
 import com.example.networkintestapp.ResponseToUi;
+import com.example.networkintestapp.SettingsActivity;
 import com.example.networkintestapp.stacks.cronetutils.MyUrlRequestCallback;
 import com.google.android.gms.net.CronetProviderInstaller;
 
@@ -19,14 +23,14 @@ import java.util.concurrent.Executor;
 
 public class CronetStack {
 
-    private Context context;
+    private Context mContext;
     private Executor executor;
     private boolean useHttps;
     private boolean useProxy;
 
-    public CronetStack (Context instanceContext, Executor thisExecutor, boolean doesHttps,
+    public CronetStack (Context context, Executor thisExecutor, boolean doesHttps,
                         boolean doesProxy) {
-        context = instanceContext;
+        mContext = context;
         executor = thisExecutor;
         useHttps = doesHttps;
         useProxy = doesProxy;
@@ -34,13 +38,19 @@ public class CronetStack {
 
     public void doRequest(String TAG, ResponseToUi model) throws IOException {
 
-        CronetProviderInstaller.installProvider(context);
+        CronetProviderInstaller.installProvider(mContext);
 
-        CronetEngine.Builder myBuilder = new CronetEngine.Builder(context);
+        CronetEngine.Builder myBuilder = new CronetEngine.Builder(mContext).enableHttpCache(
+                CronetEngine.Builder.HTTP_CACHE_DISABLED, 0);
         CronetEngine cronetEngine = myBuilder.build();
 
-        String url = Constant.DEFAULT_URL_HTTP;
-        if (useHttps) url = Constant.DEFAULT_URL_HTTPS;
+        final SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        String url = sharedPref.getString(SettingsActivity.KEY_HTTP_URL,
+                Constant.DEFAULT_URL_HTTP);
+        if (useHttps) url = sharedPref.getString(SettingsActivity.KEY_HTTPS_URL,
+                Constant.DEFAULT_URL_HTTPS);
 
         UrlRequest.Builder requestBuilder = cronetEngine.newUrlRequestBuilder(url,
                 new MyUrlRequestCallback(TAG, model), executor);

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="URL Preferences">
+        <EditTextPreference
+            android:defaultValue="http://www.pudim.com.br/"
+            android:key="value_http_url"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="HTTP URL" />
+        <EditTextPreference
+            android:defaultValue="https://www.google.com/"
+            android:key="value_https_url"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="HTTPS URL" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Proxy settings">
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="value_proxy_hostname"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Proxy Hostname" />
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="value_proxy_port"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Proxy Port" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

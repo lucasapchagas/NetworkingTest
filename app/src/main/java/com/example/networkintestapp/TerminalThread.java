@@ -44,7 +44,7 @@ public class TerminalThread {
                     executorService1.execute(new Runnable() {
                         @Override
                         public void run() {
-                            DefaultStack defaultStack = new DefaultStack(HttpsState,
+                            DefaultStack defaultStack = new DefaultStack(mContext, HttpsState,
                                     DisrespectAndroidState);
                             try {
                                 defaultStack.doRequest(TAG, mModel);
@@ -87,7 +87,8 @@ public class TerminalThread {
                     executorService1.execute(new Runnable() {
                         @Override
                         public void run() {
-                            ApacheStack apacheStack = new ApacheStack(HttpsState, DisrespectAndroidState);
+                            ApacheStack apacheStack = new ApacheStack(mContext, HttpsState,
+                                    DisrespectAndroidState);
                             try {
                                 apacheStack.doRequest(TAG, mModel);
                                 mModel.getResponseStack().postValue(Constant.Stack.APACHE);

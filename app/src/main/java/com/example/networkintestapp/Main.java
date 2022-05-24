@@ -3,12 +3,16 @@ package com.example.networkintestapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.ToggleButton;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 public class Main extends AppCompatActivity {
@@ -27,6 +32,7 @@ public class Main extends AppCompatActivity {
     public Switch switchDisrespectAndroid;
     public RadioGroup radioNetworkStack;
     public ToggleButton buttonTerminalToggle;
+    public FloatingActionButton settingsButton;
     private ResponseToUi model;
     private String TAG = this.getClass().getName();
     private Context mContext = this;
@@ -35,12 +41,12 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         switchHttps = findViewById(R.id.switchHttps);
         switchDisrespectAndroid = findViewById(R.id.switchDisrespectAndroid);
-        // TO-DO implement custom proxy for the app
-        //switchDisrespectAndroid.setEnabled(false);
         radioNetworkStack = findViewById(R.id.radioGroupNetworkStack);
         buttonTerminalToggle = findViewById(R.id.buttonTerminalToggle);
+        settingsButton = findViewById(R.id.floatingActionButton);
         for (int i = 0; i < radioNetworkStack.getChildCount(); i++) {
             radioNetworkStack.getChildAt(i).setId(i);
         }
@@ -93,11 +99,36 @@ public class Main extends AppCompatActivity {
                 buttonsEnabledState(true);
             }
         });
+
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        switchDisrespectAndroid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (radioNetworkStack.getCheckedRadioButtonId() == 2) {
+                        radioNetworkStack.check(0);
+                    }
+                    radioNetworkStack.getChildAt(2).setEnabled(false);
+                }
+                else {
+                    radioNetworkStack.getChildAt(2).setEnabled(true);
+                }
+            }
+        });
+
     }
 
     public void buttonsEnabledState(boolean state) {
         switchHttps.setEnabled(state);
-        // switchDisrespectAndroid.setEnabled(state);
+        switchDisrespectAndroid.setEnabled(state);
         for (int i = 0; i < radioNetworkStack.getChildCount(); i++) {
              radioNetworkStack.getChildAt(i).setEnabled(state);
         }

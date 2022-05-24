@@ -1,27 +1,32 @@
 package com.example.networkintestapp.stacks;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import com.example.networkintestapp.Constant;
 import com.example.networkintestapp.ResponseToUi;
+import com.example.networkintestapp.SettingsActivity;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
+import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class HttpOkStack {
 
-    private Context context;
+    private Context mContext;
     private boolean useHttps;
     private boolean useProxy;
 
-    public HttpOkStack(Context instanceContext, boolean doesHttps, boolean doesProxy) {
-        context = instanceContext;
+    public HttpOkStack(Context context, boolean doesHttps, boolean doesProxy) {
+        mContext = context;
         useHttps = doesHttps;
         useProxy = doesProxy;
     }
@@ -30,21 +35,33 @@ public class HttpOkStack {
         String url;
         OkHttpClient client;
 
+        final SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(mContext);
+
         if (useProxy) {
+            final String proxyHostname = sharedPref.getString(
+                    SettingsActivity.KEY_PROXY_HOST,"");
+            final Integer proxyPort = Integer.parseInt(sharedPref.getString(
+                    SettingsActivity.KEY_PROXY_PORT, ""));
+
             Proxy proxy = new Proxy(Proxy.Type.HTTP,
-                    new InetSocketAddress("192.168.1.0", 8080));
+                    new InetSocketAddress(proxyHostname, proxyPort));
             client = new OkHttpClient.Builder().proxy(proxy).build();
         } else {
             client = new OkHttpClient.Builder().build();
         }
 
+
         if (useHttps) {
-            url = Constant.DEFAULT_URL_HTTPS;
+            url = sharedPref.getString(SettingsActivity.KEY_HTTPS_URL,
+                    Constant.DEFAULT_URL_HTTPS);
         } else {
-            url = Constant.DEFAULT_URL_HTTP;
+            url = sharedPref.getString(SettingsActivity.KEY_HTTP_URL,
+                    Constant.DEFAULT_URL_HTTP);
         }
 
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url)
+                .header("Cache-control" ,"public,max-age=0").build();
 
         try (Response response = client.newCall(request).execute()) {
 
